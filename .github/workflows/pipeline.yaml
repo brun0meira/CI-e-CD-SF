@@ -21,28 +21,55 @@ jobs:
     - name: Complete
       run: echo "All XML files have been checked."
 
+  # test-apex:
+  #   runs-on: ubuntu-latest
+  #   needs: check-xml
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #   - name: Install Salesforce CLI
+  #     run: npm install sfdx-cli --global
+
+  #   - name: Authenticate with Salesforce
+  #     run: sfdx auth:jwt:grant --client-id ${{ secrets.SF_CLIENT_ID }} --jwt-key-file ${{ secrets.SF_JWT_KEY }} --username ${{ secrets.SF_USERNAME }} --instance-url https://login.salesforce.com
+    
+  #   - name: Push source to scratch org
+  #     run: sfdx force:source:push
+    
+  #   - name: Run Apex tests
+  #     run: sfdx force:apex:test:run --resultformat junit --outputdir test-results --codecoverage --testlevel RunLocalTests
+    
+  #   - name: Archive test results
+  #     uses: actions/upload-artifact@v3
+  #     with:
+  #       name: test-results
+  #       path: test-results
+
   test-apex:
     runs-on: ubuntu-latest
     needs: check-xml
     steps:
-    - uses: actions/checkout@v3
-    - name: Install Salesforce CLI
-      run: npm install sfdx-cli --global
+      - uses: actions/checkout@v3
 
-    - name: Authenticate with Salesforce
-      run: sfdx auth:jwt:grant --client-id ${{ secrets.SF_CLIENT_ID }} --jwt-key-file ${{ secrets.SF_JWT_KEY }} --username ${{ secrets.SF_USERNAME }} --instance-url https://login.salesforce.com
-    
-    - name: Push source to scratch org
-      run: sfdx force:source:push
-    
-    - name: Run Apex tests
-      run: sfdx force:apex:test:run --resultformat junit --outputdir test-results --codecoverage --testlevel RunLocalTests
-    
-    - name: Archive test results
-      uses: actions/upload-artifact@v3
-      with:
-        name: test-results
-        path: test-results
+      - name: Install Salesforce CLI
+        run: npm install sfdx-cli --global
+
+      - name: Create JWT Key File
+        run: echo "${{ secrets.SF_JWT_KEY }}" > jwt_key.pem
+
+      - name: Authenticate with Salesforce
+        run: sfdx auth:jwt:grant --client-id ${{ secrets.SF_CLIENT_ID }} --jwt-key-file jwt_key.pem --username ${{ secrets.SF_USERNAME }} --instance-url https://login.salesforce.com
+      
+      - name: Push source to scratch org
+        run: sfdx force:source:push
+
+      - name: Run Apex tests
+        run: sfdx force:apex:test:run --resultformat junit --outputdir test-results --codecoverage --testlevel RunLocalTests
+
+      - name: Archive test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: test-results
 
   deploy-production:
     runs-on: ubuntu-latest
