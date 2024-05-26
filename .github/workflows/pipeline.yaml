@@ -30,7 +30,7 @@ jobs:
       run: npm install sfdx-cli --global
 
     - name: Authenticate with Salesforce
-      run: sfdx auth:jwt:grant --clientid ${{ secrets.SF_CLIENT_ID }} --jwtkeyfile ${{ secrets.SF_JWT_KEY }} --username ${{ secrets.SF_USERNAME }} --instanceurl https://login.salesforce.com
+      run: sfdx auth:jwt:grant --client-id ${{ secrets.SF_CLIENT_ID }} --jwt-key-file ${{ secrets.SF_JWT_KEY }} --username ${{ secrets.SF_USERNAME }} --instance-url https://login.salesforce.com
     
     - name: Push source to scratch org
       run: sfdx force:source:push
