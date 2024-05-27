@@ -7,6 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
     - name: Install XML linting tool
       run: sudo apt-get update && sudo apt-get install -y libxml2-utils
     - name: List all XML files
@@ -30,6 +34,11 @@ jobs:
     needs: check-xml
     steps:
       - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
 
       - name: Install Salesforce CLI
         run: npm install --global @salesforce/cli
@@ -58,6 +67,11 @@ jobs:
     if: success()
     steps:
     - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
     
     - name: Install Salesforce CLI
       run: npm install --global @salesforce/cli
@@ -72,7 +86,7 @@ jobs:
       run: sf project deploy start
     
     - name: Run post-deployment tests
-      run: sf apex run test -l RunLocalTests -c -r junit -w 90 -d test-results
+      run: sf apex run test -l RunLocalTests -c -r junit -w 90 -d test-results-production
     
     - name: Archive production test results
       uses: actions/upload-artifact@v3
