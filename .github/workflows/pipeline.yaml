@@ -18,7 +18,9 @@ jobs:
         failed_files=""
         failed_count=0
         for file in $(find . -type f -name "*.xml"); do
-          if ! xmllint --noout "$file" 2>/dev/null; then
+          if xmllint --noout "$file" 2>/dev/null; then
+            echo "XML syntax is valid for $file"
+          else
             echo "XML syntax check failed for $file"
             failed_files="$failed_files$file\n"
             ((failed_count++))
@@ -26,18 +28,6 @@ jobs:
         done
         echo "::set-output name=failed_count::$failed_count"
         echo "::set-output name=failed_files::$failed_files"
-
-    - name: Check XML
-      id: check_xml
-      uses: ./check-xml
-
-    - name: Show XML check summary
-      if: steps.check_xml.outputs.failed_count != '0'
-      run: |
-        echo "Failed XML files count: ${{ steps.check_xml.outputs.failed_count }}"
-        echo "Failed XML files:"
-        echo -e "${{ steps.check_xml.outputs.failed_files }}"
-        
     - name: Complete
       run: echo "All XML files have been checked."
       
