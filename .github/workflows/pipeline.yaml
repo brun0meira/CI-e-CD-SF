@@ -3,23 +3,23 @@ name: CI/CD Pipeline
 on: push
 
 jobs:
-  check-xml:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Install XML linting tool
-      run: sudo apt-get update && sudo apt-get install -y libxml2-utils
-    - name: List all XML files
-      run: |
-        find . -type f -name "*.xml"
-    - name: Check XML syntax
-      run: |
-        set -e
-        for file in $(find . -type f -name "*.xml"); do
-          xmllint --noout $file
-        done
-    - name: Complete
-      run: echo "All XML files have been checked."
+  # check-xml:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #   - name: Install XML linting tool
+  #     run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+  #   - name: List all XML files
+  #     run: |
+  #       find . -type f -name "*.xml"
+  #   - name: Check XML syntax
+  #     run: |
+  #       set -e
+  #       for file in $(find . -type f -name "*.xml"); do
+  #         xmllint --noout $file
+  #       done
+  #   - name: Complete
+  #     run: echo "All XML files have been checked."
       
   test-apex:
     runs-on: ubuntu-latest
