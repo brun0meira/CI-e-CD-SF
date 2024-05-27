@@ -29,8 +29,8 @@ jobs:
 
       - name: Install Salesforce CLI
         run: |
-        npm install --global @salesforce/cli
-        npm install sfdx-cli --global
+          npm install --global @salesforce/cli
+          npm install sfdx-cli --global
 
       - name: Create JWT Key File
         run: echo "${{ secrets.SF_JWT_KEY }}" > jwt_key.pem
@@ -59,8 +59,8 @@ jobs:
     
     - name: Install Salesforce CLI
       run: |
-      npm install --global @salesforce/cli
-      npm install sfdx-cli --global
+        npm install --global @salesforce/cli
+        npm install sfdx-cli --global
 
     - name: Create JWT Key File
       run: echo "${{ secrets.SF_JWT_KEY }}" > jwt_key.pem
