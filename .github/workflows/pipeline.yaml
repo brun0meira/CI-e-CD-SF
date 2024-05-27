@@ -16,7 +16,7 @@ jobs:
       run: |
         set -e
         for file in $(find . -type f -name "*.xml"); do
-          if [[ "$file" != *"BusinessBrand-Business"* ]]; then
+          if [[ "$file" != *"BusinessBrand-Business Brand Layout.layout-meta"* ]]; then
             xmllint --noout $file
           else
             echo "Skipping $file"
