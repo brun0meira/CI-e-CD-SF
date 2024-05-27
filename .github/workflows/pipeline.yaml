@@ -23,7 +23,7 @@ jobs:
       
   test-apex:
     runs-on: ubuntu-latest
-    needs: check-xml
+    # needs: check-xml
     steps:
       - uses: actions/checkout@v3
 
